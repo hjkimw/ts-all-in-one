@@ -1,3 +1,3 @@
-# 📘 typescript all in one
+# 📘 TypeScript all in one - part1
 
-타입스크립트 지식을 정리합니다.
+- [section 1](https://github.com/hjkimw/typescript-all-in-one/blob/part1/part1/section1.md)
