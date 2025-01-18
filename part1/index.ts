@@ -61,3 +61,8 @@ const arr4 = [1, 2, 3]; // number[]
 const arr5 = [ 123, 456, 'hi']; // (string | number)[]
 
 const obj2 = { lat: 37.5, lon: 127.5 }; // { lat: number; lon: number; }
+
+
+// * 타입 단언
+let aa = 123;
+aa = 'hi' as unknown as number;
