@@ -69,7 +69,7 @@ aa = 'hi' as unknown as number;
 
 
 // * never 타입과 느낌표(non-null assertion)
-{
+function never (){
   // 빈 배열 선언 시 타입을 지정하지 않으면 never[]로 추론되므로 애초에 빈 배열을 선언할 때 타입을 지정해 주자
   const array = []; // never[]  
   array.push('hi'); // array: never[] -> array: any[]
@@ -232,4 +232,12 @@ aa = 'hi' as unknown as number;
     // 2. 객체의 `value`들을 타입으로 추출
     type key2 = typeof obj2 [keyof typeof obj2]; // "123" | "hello" | "world"
   }
+}
+
+
+// * union(|)과 intersection(&)
+{
+
+  
+
 }

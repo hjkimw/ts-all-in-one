@@ -39,7 +39,7 @@ const obj2 = { lat: 37.5, lon: 127.5 }; // { lat: number; lon: number; }
 let aa = 123;
 aa = 'hi';
 // * never 타입과 느낌표(non-null assertion)
-{
+function never() {
     // 빈 배열 선언 시 타입을 지정하지 않으면 never[]로 추론되므로 애초에 빈 배열을 선언할 때 타입을 지정해 주자
     const array = []; // never[]  
     array.push('hi'); // array: never[] -> array: any[]
@@ -135,4 +135,7 @@ aa = 'hi';
             c: 'world',
         };
     }
+}
+// * union(|)과 intersection(&)
+{
 }
