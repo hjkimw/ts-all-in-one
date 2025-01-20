@@ -85,3 +85,37 @@ if(head){
   head.textContent = 'dada';
 }
 
+
+{    
+  // 원시 래퍼 타입
+  const a: string = 'hi';
+  const b: String = 'hell'; // String은 래퍼 객체, 내장 함수 String을 뜻함 -> interface String
+}
+
+{
+  type World  = 'world' | 'hell';
+  
+  // 템플릿 리터럴 타입
+  type Greeting = `hello ${World}`; // -> type Greeting = "hello hell" | "hello world"
+
+
+  // rest
+  let arr: string[] = [];
+  let arr2: Array<string> = [];
+
+  function rest(a: number, ...args: string[]){
+    console.log(a, args);    
+  }
+
+  rest(1, ...['1', '2', '3']);
+
+  
+  // tuple
+  const tuple: [string, number] = ['1', 1];
+
+  // tuple[2]  = 'hello'; // ❌
+
+  tuple.push('hello'); 
+
+}
+
