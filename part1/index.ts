@@ -120,3 +120,116 @@ aa = 'hi' as unknown as number;
 
   tuple.push('hello'); 
 }
+
+
+// * enum, keyof, typeof
+{
+
+  // * enum
+  // -> enum은 js로 컴파일될떄 숫자로 치환된다.
+  // -> 숫자, 문자열 타입 값을 설정할 수 있다.
+  // -> 보통 변수들을 하나의 그룹으로 묶고 싶을 때 사용한다.
+  
+  // - 기본값
+  {
+    const enum EDirection {
+      Up,    // 0
+      Down,  // 1
+      Left,  // 2
+      Right, // 3
+    }
+  
+    const a = EDirection.Up;    // 0
+    const b = EDirection.Down;  // 1
+    const c = EDirection.Left;  // 2
+    const d = EDirection.Right; // 3
+  }
+
+
+  // - 순서 설정, 앞에 설정된 순서의 이후 순서값으로 자동 설정된다.
+  {
+    const enum EDirection {
+      Up = 3 , // 3
+      Down,    // 4
+      Left,    // 5
+      Right,   // 6
+    }
+  
+    const a = EDirection.Up;    // 3
+    const b = EDirection.Down;  // 4
+    const c = EDirection.Left;  // 5
+    const d = EDirection.Right; // 6
+  }
+
+
+  // - 순서 설정, 맘대로 불규칙하게 순서를 설정
+  {
+    const enum EDirection {
+      Up = 3 ,    // 3
+      Down = 5,   // 5
+      Left = 4,   // 4
+      Right = 6,  // 6
+    }
+  
+    const a = EDirection.Up;    // 3
+    const b = EDirection.Down;  // 5
+    const c = EDirection.Left;  // 4
+    const d = EDirection.Right; // 6
+  }
+
+
+  // * as const
+  {
+    // 1. 설정한 값이 아닌 설정한 값의 타입으로 타입이 지정된 상황
+    const ODirection1 = { 
+      Up: 0,
+      Down: 1,
+      Left: 2,
+      Right: 3,
+    } // -> ODirection1: { Up: number; Down: number; Left: number; Right: number; }
+
+
+    // 2. `as const`를 붙여서 정확하게 해당 값으로 타입을 지정, 수정할 수 없도록 `readonly` 키워드로 고정되게 된다.
+    const ODirection2 = { 
+      Up: 0,
+      Down: 1,
+      Left: 2,
+      Right: 3,
+    } as const; // -> ODirection2: { readonly Up: 0; readonly Down: 1; readonly Left: 2; readonly Right: 3; }    
+  }
+  // -> readonly 키워드 또한 TypeScript이므로 JavaScript로 컴파일될때 사라진다.
+
+
+  // * keyof
+  {
+    // - 객체의 `key`들을 타입으로 추출
+      const obj = {
+        a: '123',
+        b: 'hello',
+        c: 'world',
+      };
+
+    // 1. `typeof` 키워드로 obj에서 타입을 추출 -> obj: { a: string; b: string; c: string; }
+    // 2. 추출된 해당 타입에서 `keyof` 키워드로 `key`만 추출 -> type key = "a" | "b" | "c"
+    type key = keyof typeof obj; // "a" | "b" | "c"
+    /*
+      - obj 객체는 JavaScript 값이므로 타입으로 쓸 수 없기 때문에 
+        typeof 키워드로 타입으로 추출하고
+        추출한 해당 타입에 `keyof` 키워드로 `key`만 추출한 것이다.
+    */
+
+
+    // - 객체의 `value`들을 타입으로 추출
+    const obj2 = {
+      a: '123',
+      b: 'hello',
+      c: 'world',
+    } as const;
+
+    // 1. `value`를 타입으로 추출할 해당 객체가 `as const` 키워드로 설정되어야 해당 객체의 값을 정확하게 추출한다.
+    //   1.1. 해당 객체에 `as const` 키워드가 없을 경우 
+    //        해당 객체의 타입은 값이 아닌 타입(ex: string)로 널널하게 추론되므로 값으로 타입이 추출되지않는다.
+    // 2. 객체의 `value`들을 타입으로 추출
+    type key2 = typeof obj2 [keyof typeof obj2]; // "123" | "hello" | "world"
+  }
+}

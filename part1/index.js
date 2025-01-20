@@ -70,3 +70,69 @@ aa = 'hi';
     // tuple[2]  = 'hello'; // ❌
     tuple.push('hello');
 }
+// * enum, keyof, typeof
+{
+    // * enum
+    // -> enum은 js로 컴파일될떄 숫자로 치환된다.
+    // -> 숫자, 문자열 타입 값을 설정할 수 있다.
+    // -> 보통 변수들을 하나의 그룹으로 묶고 싶을 때 사용한다.
+    // - 기본값
+    {
+        const a = 0 /* EDirection.Up */; // 0
+        const b = 1 /* EDirection.Down */; // 1
+        const c = 2 /* EDirection.Left */; // 2
+        const d = 3 /* EDirection.Right */; // 3
+    }
+    // - 순서 설정, 앞에 설정된 순서의 이후 순서값으로 자동 설정된다.
+    {
+        const a = 3 /* EDirection.Up */; // 3
+        const b = 4 /* EDirection.Down */; // 4
+        const c = 5 /* EDirection.Left */; // 5
+        const d = 6 /* EDirection.Right */; // 6
+    }
+    // - 순서 설정, 맘대로 불규칙하게 순서를 설정
+    {
+        const a = 3 /* EDirection.Up */; // 3
+        const b = 5 /* EDirection.Down */; // 5
+        const c = 4 /* EDirection.Left */; // 4
+        const d = 6 /* EDirection.Right */; // 6
+    }
+    // * as const
+    {
+        // 1. 설정한 값이 아닌 설정한 값의 타입으로 타입이 지정된 상황
+        const ODirection1 = {
+            Up: 0,
+            Down: 1,
+            Left: 2,
+            Right: 3,
+        }; // -> ODirection1: { Up: number; Down: number; Left: number; Right: number; }
+        // 2. `as const`를 붙여서 정확하게 해당 값으로 타입을 지정, 수정할 수 없도록 `readonly` 키워드로 고정되게 된다.
+        const ODirection2 = {
+            Up: 0,
+            Down: 1,
+            Left: 2,
+            Right: 3,
+        }; // -> ODirection2: { readonly Up: 0; readonly Down: 1; readonly Left: 2; readonly Right: 3; }    
+    }
+    // -> readonly 키워드 또한 TypeScript이므로 JavaScript로 컴파일될때 사라진다.
+    // * keyof
+    {
+        // - 객체의 `key`들을 타입으로 추출
+        const obj = {
+            a: '123',
+            b: 'hello',
+            c: 'world',
+        };
+        /*
+          - obj 객체는 JavaScript 값이므로 타입으로 쓸 수 없기 때문에
+            typeof 키워드로 타입으로 추출하고
+            추출한 해당 타입에 `keyof` 키워드로 `key`만 추출한 것이다.
+        */
+        // - 객체의 `value`들을 타입으로 추출
+        const obj2 = {
+            a: '123',
+            b: 'hello',
+            c: 'world',
+        };
+    }
+}
