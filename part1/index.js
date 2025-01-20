@@ -136,6 +136,34 @@ function never() {
         };
     }
 }
-// * union(|)과 intersection(&)
+// * type alias(타입 정의), interface, union(|)과 intersection(&)
 {
+    const a = { a: 'hello' };
+    ; // { a: string; }
+    const b = { a: 'hello' };
+    // - union(|)
+    function add(x, y) {
+        if ([x, y].every((item) => (typeof item) === 'number')) {
+            return (+x) + (+y);
+        }
+        return (x + '') + (y + '');
+    }
+    add(1, 2);
+    add('1', '2');
+    add(1, '2');
+    const c = {
+        hello: 'world',
+        zero: 'cho',
+    };
+    const d = {
+        hello: 'world',
+        zero: 'cho',
+    };
+    // A 또는 B 라는 의미가 되므로
+    // 둘 중 하나의 타입만 만족해도 되게된다.
+    const d2 = {
+        hello: 'world',
+    };
+    // -> intersection(&): 모든 속성이 다 존재해야한다.
+    // -> union(|): 여러개 중에 하나만 있어도 된다.
 }
