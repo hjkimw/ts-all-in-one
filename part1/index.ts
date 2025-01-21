@@ -286,3 +286,54 @@ function never (){
   // -> union(|): 여러개 중에 하나만 있어도 된다.
 
 }
+
+
+// * type alias와 인터페이스의 상속(extends)
+{ 
+  // - type alias의 상속(extends)
+  type Animal = { breath: true }; // { breed: true; }
+  type Poyouryu = Animal & {breed: true}; // -> { breath: true; breed: true; }
+  type Human = Poyouryu & {think: true}; // -> { breath: true; breed: true; think: true }
+
+  const jin: Human = { // { breath: true; breed: true; think: true }
+    breath: true,
+    breed: true,
+    think: true,
+  };
+
+
+  // - interface의 상속(extends)
+  interface A {
+    breath: true,
+  }
+  
+  interface B extends A { // interface A를 상속 받아서 확장    
+    breed: true,
+  } 
+  // -> { breath: true; breed: true; }
+  // interface가 같은 interface 뿐 만 아니라 type alias을 extends 하는것도 가능.
+  
+  const jin2: B = { // { breath: true; breed: true; }
+    breath: true,
+    breed: true,    
+  };
+
+  // * interface는 식별자 중복 가능, type은 불가능
+  // * 식별자가 중복되면 식별자가 동일한 interface 끼리 합쳐진다. (이 특성을 기반으로 라이브러리에 선언된 interfae를 수정할 수 있다.)
+  interface A {
+    // talk: ()=> void;
+  }
+  interface A {
+    // eat: ()=> void;
+  }
+  interface A {
+    // shit: ()=> void;
+  }
+
+  
+  // - interface, type alias 네이밍(옛날 방식)
+  // 식별자에 다음과 같은 키워드를 붙인다.
+  // interface -> I
+  // type -> T
+  // enum -> E
+}

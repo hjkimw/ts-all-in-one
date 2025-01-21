@@ -167,3 +167,16 @@ function never() {
     // -> intersection(&): 모든 속성이 다 존재해야한다.
     // -> union(|): 여러개 중에 하나만 있어도 된다.
 }
+// * type alias와 인터페이스의 상속(extends)
+{
+    const jin = {
+        breath: true,
+        breed: true,
+        think: true,
+    };
+    const jin2 = {
+        breath: true,
+        breed: true,
+    };
+    // 
+}
