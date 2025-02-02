@@ -593,3 +593,30 @@ let target: number[] = [];
 }
 
 
+// * {}와 Object
+{
+
+  // * {}, Object은 ts에서 객체가 아니라 null과 undefined 제외한 모든 타입을 가리킨다.
+  const x: {} = 'hello'; // ⭕️
+  const y: Object = 'hi'; // ⭕️
+
+  // const x: {} = null; // ❌
+  // const x: {} = undefined; // ❌ 
+
+
+  // * object는 객체 타입을 나타낸다.
+  const xx: object = 'hi'; // ❌, 'string' 형식은 'object' 형식에 할당할 수 없습니다.
+  const yy: object = {hello: 'world'}; // object 지양, interface, type, class 사용을 지향
+
+  // unknown 타입은 모든 타입을 대입할 수 있다.
+  const z: unknown = 'hi';
+
+  // unknown = {} | null | undefined
+  if(z){ // unknown
+    z; // {}
+  }else{
+    z; // unknown
+  }
+
+
+}
