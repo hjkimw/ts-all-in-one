@@ -562,4 +562,34 @@ let target: number[] = [];
 }
 
 
+// * 커스텀 타입 가드(is, 형식 조건자)
+{
+
+  interface Cat{
+    meow: number;
+  };
+
+  interface Dog{
+    bow: number;
+  };
+
+  // * 타입 판별 커스텀 함수, 함수 반환 타입에 is가 있으면 커스텀 타입가드 함수다.
+  // - 커스텀 타입가드 함수는 조건문 안에서 사용한다.
+  // - if문 같은 조건문 안에 써서 ts한테 정확한 타입이 뭔지 알려주는 것이다.
+  // - is 키워드가 없을 경우 if문 안에 들어갔을때 ts가 구분할 수 없다.
+  function catOrDog(a: Cat | Dog): a is Dog {
+    if('meow' in a){return false}
+    return true;
+  }
+  
+  function pet(a: Cat | Dog){
+    if(!catOrDog(a)){ // false 면 Cat
+      console.log(a.meow);      
+    }else{ // true 면 Dog
+      console.log(a.bow);      
+    }
+  }
+
+}
+
 
