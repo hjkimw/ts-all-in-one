@@ -383,13 +383,71 @@ function never (){
   const ab2: AB = c; // 합집합 `A | B`에 교집합 `A & B`를 대입하는 것이므로 가능 ⭕️      
   
   // -> 속성이 타입이 넓은지 좁은지로 따질 수 있다.
-  
+}
 
-  // * 잉여 속성 검사
-  const obj = {name: 'jin', age: 28, married: false};
-  const c3: C = obj;
+
+// * 잉여 속성 검사
+{
+  interface A {
+    a: string;
+  }
+
+  const obj = { a: 'hi', b: 'yo' }; 
+
+  const obj1: A = obj 
   
 }
+
+
+//* void의 세 가지 사용법
+// - return 값이 `void` 일때
+// - 매개변수에 `void`를 반환하는 함수가 들어올때
+// - 객체 내부에 메서드가 `void`를 반환하도록 선언될때
+{
+
+  // void를 반환하는 함수
+  function a(): void { 
+
+  }
+
+  // 매개변수로 선언한 void
+  function b(callback: ()=> void): void{
+    
+  }
+
+  // b함수 매개변수에는 void로 설정되었으나
+  // 문자열을 반환하는 함수를 전달했음에도 에러가 출력되지 않는다.
+  b(()=>{
+    return '3';
+  });
+
+  interface Human{
+    talk: () => void;
+  }
+
+  const human: Human = {
+    // - 객체 내부에 void를 반환하는 메서드
+    // - 반환하는 값이 없으므로 void에 해당
+    talk(){ 
+      // return;
+      // return undefined;
+
+      return 'adfs';
+    }
+  }
+  
+}
+
+
+// * 함수에 직접적으로 대입한 void와 매개변수 콜백의 void, method의 void는 서로 다르다.
+// declare function forEach(arr: number[], callback:(el: number)=> undefined): void; // ❌
+// declare function forEach(arr: number[], callback:(el: number)=> number): void; // ⭕️
+
+// - 즉, 매개변수에서 쓰이는 void는 실제 return 값이 뭐든 상관하지 않겠다는 의미인 것이다.
+declare function forEach(arr: number[], callback:(el: number)=> void): void; // ⭕️
+
+let target: number[] = [];
+forEach([1, 2, 3], el => target.push(el))
 
 
 
