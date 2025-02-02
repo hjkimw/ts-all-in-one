@@ -716,7 +716,7 @@ let target: number[] = [];
 
 
   {
-    
+
     class B {
       // * 클래스 내부에서만 접근이 가능한 속성, 상속 불가능
       private a: string = '123'; 
@@ -757,3 +757,71 @@ let target: number[] = [];
   
 }
 
+
+// * 옵셔널, 제네릭 기본
+{
+
+  // - 옵셔널
+  function abc(a: number, b?: number, c?: number){}
+  
+  abc(1);       // ⭕️
+  abc(1, 2);    // ⭕️
+  abc(1, 2, 3); // ⭕️
+  
+  
+  // rest parameter
+  function abcd(...rest: number[]){}
+
+  interface Obj {
+    a: string; 
+    b?: string
+  }
+
+  const obj: Obj = {
+    a: 'hello',
+    // b: 'world',
+  };
+
+
+
+  {
+
+    // - 제네릭
+
+    // extends 키워드로 제네릭 T를 number | string  타입으로 제한 시킨다.
+    function add<T extends number | string>(x: T, y: T): T {
+      return x;
+    }    
+    add(1, 2);
+    add('1', '2');
+
+
+    // 제니릭을 T, K 두개를 전달받아 적용한다.
+    function add1<T extends string, K extends number >(x: T, y: K): T | K {
+      return x;
+    }        
+    add1<string, number>('1', 2); 
+
+    // {a: string} 형식 객체 타입만 전달받도록 제한
+    function add2<T extends {a: string}>(x: T): T{
+      return x;
+    }    
+    add2<{a: string}>({a: 'hellow'});
+
+
+    // 문자열 배열타입만 전달받도록 제한 
+    function add3<T extends string[]>(x: T): T{
+      return x;
+    }
+    add3(['1', '2', '3']);
+
+    
+    // 콜백 함수의 형태를 제한
+    function add4<T extends (a: string)=> number >(x: T): T{
+      return x;
+    }
+    add4((a)=> +a);
+    
+  }
+
+}
