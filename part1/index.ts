@@ -4,6 +4,8 @@
 // const d: undefined = undefined;
 // const e: null = null;
 
+import { StringMappingType } from 'typescript';
+
 // * 타입 추론
 const a = '5';
 const b = 5;
@@ -605,7 +607,7 @@ let target: number[] = [];
 
 
   // * object는 객체 타입을 나타낸다.
-  const xx: object = 'hi'; // ❌, 'string' 형식은 'object' 형식에 할당할 수 없습니다.
+  // const xx: object = 'hi'; // ❌, 'string' 형식은 'object' 형식에 할당할 수 없습니다.
   const yy: object = {hello: 'world'}; // object 지양, interface, type, class 사용을 지향
 
   // unknown 타입은 모든 타입을 대입할 수 있다.
@@ -617,6 +619,68 @@ let target: number[] = [];
   }else{
     z; // unknown
   }
+
+
+}
+
+
+// * readonly, 인덱스드 시그니처, 맵드 타입스
+{
+
+  // - readonly
+  interface A {
+    readonly a: string;
+    b: string;
+  }
+  const a: A = {
+    a: 'hello',
+    b: 'world',
+  };
+
+  // a.a = '123'; // 🚨 읽기 전용 속성이므로 'a'에 할당할 수 없습니다.
+
+
+  // - 인덱스드 시그니처
+  interface B {
+    [key: string] : string;
+    // a: string;
+    // b: string;
+    // c: string;
+  };
+
+  const b: B = {
+    a: '1',
+    b: '2',
+    c: '3',
+  };
+
+
+  interface C {
+    [key: string] : number;
+    // a: string;
+    // b: string;
+    // c: string;
+  };
+
+  const c: C = {
+    a: 1,
+    b: 2,
+    c: 3,
+  };
+
+  // 맵드 타입스
+  type D = 'Human' | 'Mammal' | 'Animal';
+  type E = {
+     // 타입 D에 해당하는 문자열 값으로 key를 제한을 걸 수 있다.
+    [key in D]: number;
+     // [key in D]: D; // 값에 적용도 할 수 있다.
+  };
+
+  const e:E = {
+    Human: 1,
+    Mammal: 1,
+    Animal: 1,
+  };
 
 
 }
