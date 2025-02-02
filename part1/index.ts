@@ -684,3 +684,76 @@ let target: number[] = [];
 
 
 }
+
+
+// * 클래스의 새로운 기능들
+{
+
+  class A {
+    // * ts에서의 private
+    private a: string;
+    private b: number;
+
+    // * js에서의 private
+    // #a = '';
+    // #b = 123;    
+    
+    constructor(a: string = '', b: number = 123){
+      this.a = '123';
+      this.b = 123;
+    }
+
+    method(){
+      
+    }
+
+  }
+
+  typeof A; // class A를 가리킨다.
+  type AA = A; // class A가 아니라 new A를 가리킨다.
+
+  const a: A = new A('123');
+
+
+  {
+    
+    class B {
+      // * 클래스 내부에서만 접근이 가능한 속성, 상속 불가능
+      private a: string = '123'; 
+      
+      // * 클래스 내부에서만 접근이 가능한 속성, 상속 불가능
+      protected b: string = '';  
+      
+      // * 인스턴스에서도 접근이 가능한 속성, public 키워드는 기본값이므로 안붙여도 된다.
+      public c: number = 123;    
+    
+      method(){
+        console.log(this.a);
+        console.log(this.b);
+        console.log(this.c);                
+      }
+    }
+    
+    // B 클래스를 상속 받는다.
+    class C extends B {
+    
+      method(){
+        // 🚨 'a' 속성은 private이며 'B' 클래스 내부에서만 액세스할 수 있다. 인스턴스에서 접근 불가능
+        console.log(this.a);
+      
+        // 상속 받은 자식 클래스 내부에서도 protected 속성에 접근이 기능하다. 인스턴스에서 접근 불가능
+        console.log(this.b);
+        
+        // public 속성이므로 상속 받은 자식 클래스 내부 및 인스턴스에서도 접근 가능  
+        console.log(this.c);
+      }
+    }
+    
+    new C().a; // 🚨 a는 private 속성이므로 클래스 내부세어만 접근이 가능, 상속 불가능
+    new C().b; // 🚨 b는 protected 속성이므로 클래스 내부에서만 접근이 가능, 상속 가능
+    new C().c; // c는 public 속성이므로 인스턴스에서 접근이 가능
+
+  }
+  
+}
+
