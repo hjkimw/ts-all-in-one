@@ -337,3 +337,59 @@ function never (){
   // type -> T
   // enum -> E
 }
+
+
+// * 타입을 집합으로 생각하자(좁은 타입과 넓은 타입)
+{ 
+  // 집합으로 생각하기
+  type A = string | number; // 넓은 타입
+  type B = string; // 좁은 타입
+  
+  type C = string & number; // never, 공집합
+}
+
+
+// * 객체 타입에서의 넓은 타입과 좁은 타입
+{ 
+  // - 객체 타입은 상세할 수록 넓은 타입이다.
+  type A = { name: string };
+  type B = { age: number };
+
+  // * union(|)
+  // A와 B타입의 합집합 -> 넓은 타입
+  type AB = A | B;     
+  
+  const ab: AB = { name: 'jin' }; // ⭕️
+  // const ab: AB = { age: 28 }; // ⭕️
+  // const ab: AB = { name: 'jin', age: 28 }; // ⭕️
+
+  // * intersection(&)
+  // type C = { name: string, age: number };
+
+  // A와 B타입의 교집합 -> 좁은 타입, { name: string, age: number };와 동일하다.
+  type C = A & B; 
+
+  const c: C = { name: 'jin', age: 28 }; // ⭕️
+  //const c: C = { name: 'jin' }; // ❌
+  // const c: C = { age: 28 }; // ❌    
+  
+  const ab1: AB = { name: 'jin' }; // `A | B` 타입 합집합 이므로 ⭕️
+  const c1: C = { name: 'jin', age: 28}; // `A & B` 타입 교집합 이므로 ⭕️
+  
+  // * 좁은 타입 = 넓은 타입
+  // const c2: C = ab; // `A & B` 타입 교집합 C 보다 넓은 합집합 타입 `A | B` 타입 ab는 대입 불가능 ❌
+  
+  // * 넓은 타입 = 좁은 타입
+  const ab2: AB = c; // 합집합 `A | B`에 교집합 `A & B`를 대입하는 것이므로 가능 ⭕️      
+  
+  // -> 속성이 타입이 넓은지 좁은지로 따질 수 있다.
+  
+
+  // * 잉여 속성 검사
+  const obj = {name: 'jin', age: 28, married: false};
+  const c3: C = obj;
+  
+}
+
+
+
