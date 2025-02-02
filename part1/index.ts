@@ -447,7 +447,7 @@ function never (){
 declare function forEach(arr: number[], callback:(el: number)=> void): void; // ⭕️
 
 let target: number[] = [];
-forEach([1, 2, 3], el => target.push(el))
+// forEach([1, 2, 3], el => target.push(el))
 
 
 
@@ -458,3 +458,108 @@ forEach([1, 2, 3], el => target.push(el))
 
 // 2. unknown 타입을 설정하면 직접 타입을 설정해줘야 한다.
 //  2.2. 타입 단언(as)로 정해진 타입만 쓸 수 있도록 
+
+
+
+
+// * 타입 좁히기(타입 가드)
+{
+  // 전달받는 매개변수가 number 또는 string 타입이므로 
+  // 조건문에서 typeof 연산자를 사용해 해당 타입일때 특정 동작을 처리하도록 타입을 보장한다.
+  // ( 타입 단언(as)을 사용하는건 권장하지 않는다. )
+  function numOrStr(a: number | string){
+    if(typeof a === 'string'){ // string
+      a.split(',');
+    }else if(typeof a === 'number'){ // number
+      a.toFixed(1);
+    }
+  }  
+  numOrStr('123');
+  numOrStr(1);
+
+
+  function numOrNumArray(a: number | number[]){
+    if(Array.isArray(a)){ // number[]
+      a.map(n => n*2 );
+
+    }else if(typeof a === 'number'){ // number
+      a.toFixed(1);
+    }
+  }
+  numOrNumArray(123);
+  numOrNumArray([1,2,3]);
+
+
+  class A{
+    aaa(){}
+  }
+  
+  class B{
+    bbb(){}
+  }
+  
+  // * 클래스는 그 자체로도 타입이 될 수 있다.
+  // * 단, 클래스 자체를 의미하는 게 아니라 해당 클래스로 생성한 인스턴스 객체를 의미한다.
+  // -> 인스턴스 타이핑은 클래스 이름으로 한다.
+  function aOrB(param: A | B){
+    if(param instanceof A){ // 클래스 A의 인스턴스일 때
+      param.aaa();
+    }else if(param instanceof B){ // 클래스 B의 인스턴스일 때
+      param.bbb();
+    }
+  }
+
+  // aOrB(A); // ❌ 'typeof A' 형식의 인수는 'A | B' 형식의 매개 변수에 할당될 수 없습니다. 
+  
+  aOrB(new A());
+  aOrB(new B());
+
+
+  {
+    // 다음과 같이 객체 형식의 타입들이 있을때 
+    // 함수에 인자로 전달받는 객체의 타입을 체킹 해야할 경우
+    // 전달 받는 객체의 속성 또는 key로 구별을 할 수 있다.
+    type B ={ type: 'b', bbb: string};
+    type C ={ type: 'c', ccc: string};
+    type D ={ type: 'd', ddd: string};
+
+    type Bcd = B | C | D;
+
+    function typeCheck(a: Bcd){
+
+      // * 전달 받는 객체의 속성의 key로 타입을 구별( in 연산자 활용 )
+      if('bbb' in a){ // 'bbb' 속성이 a객체에 있을때
+        a.type; // -> a: B
+      }else if ('ccc' in a){ // 'bbb' 속성이 a객체에 있을때
+        a.type; // -> a: C
+      }else if('ddd' in a){ // 'ddd' 속성이 a객체에 있을때
+        a.type; // -> a: D
+      }
+
+      // * 전달 받는 객체의 속성으로 타입을 구별
+      // if(a.type === 'b'){
+      //   a.bbb;
+      // }else if(a.type === 'c'){        
+      //   a.ccc;
+      // }else if(a.type === 'd'){        
+      //   a.ddd;
+      // }
+      
+    }    
+
+
+    // ts에서 객체를 생성할 때 타입을 구별할 수 있도록 type속성을 설정해 별도의 값으로 초기화 해준다.
+    // 객체에 태그, 라벨을 달아두는 개념으로 보면 된다.
+    const human = {type: 'human'};
+    const dog = {type: 'dog'};
+    const cat = {type: 'cat'};    
+    
+    // 만약 객체에 type속성 같은 각 객체를 구별할 속성이 없을 경우
+    // 각 객체 마다 차이점을 찾아서 구별해준다.
+
+  }  
+
+}
+
+
+

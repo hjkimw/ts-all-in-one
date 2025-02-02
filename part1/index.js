@@ -174,12 +174,129 @@ function never() {
         breed: true,
         think: true,
     };
+    // -> { breath: true; breed: true; }
+    // interface가 같은 interface 뿐 만 아니라 type alias을 extends 하는것도 가능.
     const jin2 = {
         breath: true,
         breed: true,
     };
-    // 
+    // - interface, type alias 네이밍(옛날 방식)
+    // 식별자에 다음과 같은 키워드를 붙인다.
+    // interface -> I
+    // type -> T
+    // enum -> E
 }
-
-
-
+// * 타입을 집합으로 생각하자(좁은 타입과 넓은 타입)
+{
+}
+// * 객체 타입에서의 넓은 타입과 좁은 타입
+{
+    const ab = { name: 'jin' }; // ⭕️
+    const c = { name: 'jin', age: 28 }; // ⭕️
+    //const c: C = { name: 'jin' }; // ❌
+    // const c: C = { age: 28 }; // ❌    
+    const ab1 = { name: 'jin' }; // `A | B` 타입 합집합 이므로 ⭕️
+    const c1 = { name: 'jin', age: 28 }; // `A & B` 타입 교집합 이므로 ⭕️
+    // * 좁은 타입 = 넓은 타입
+    // const c2: C = ab; // `A & B` 타입 교집합 C 보다 넓은 합집합 타입 `A | B` 타입 ab는 대입 불가능 ❌
+    // * 넓은 타입 = 좁은 타입
+    const ab2 = c; // 합집합 `A | B`에 교집합 `A & B`를 대입하는 것이므로 가능 ⭕️      
+    // -> 속성이 타입이 넓은지 좁은지로 따질 수 있다.
+}
+// * 잉여 속성 검사
+{
+    const obj = { a: 'hi', b: 'yo' };
+    const obj1 = obj;
+}
+//* void의 세 가지 사용법
+// - return 값이 `void` 일때
+// - 매개변수에 `void`를 반환하는 함수가 들어올때
+// - 객체 내부에 메서드가 `void`를 반환하도록 선언될때
+{
+    // void를 반환하는 함수
+    function a() {
+    }
+    // 매개변수로 선언한 void
+    function b(callback) {
+    }
+    // b함수 매개변수에는 void로 설정되었으나
+    // 문자열을 반환하는 함수를 전달했음에도 에러가 출력되지 않는다.
+    b(() => {
+        return '3';
+    });
+    const human = {
+        // - 객체 내부에 void를 반환하는 메서드
+        // - 반환하는 값이 없으므로 void에 해당
+        talk() {
+            // return;
+            // return undefined;
+            return 'adfs';
+        }
+    };
+}
+let target = [];
+// forEach([1, 2, 3], el => target.push(el))
+// * unknown과 any(그리고 타입 대입가능표)
+// 1. any타입을 쓸 바에는 unknown 타입을 쓰도록 하자
+//  1.1. any타입을 설정하면 ts가 타입 자체를 검사지 않는다.
+// 2. unknown 타입을 설정하면 직접 타입을 설정해줘야 한다.
+//  2.2. 타입 단언(as)로 정해진 타입만 쓸 수 있도록 
+// * 타입 좁히기(타입 가드)
+{
+    // 전달받는 매개변수가 number 또는 string 타입이므로 
+    // 조건문에서 typeof 연산자를 사용해 해당 타입일때 특정 동작을 처리하도록 타입을 보장한다.
+    // ( 타입 단언(as)을 사용하는건 권장하지 않는다. )
+    function numOrStr(a) {
+        if (typeof a === 'string') { // string
+            a.split(',');
+        }
+        else if (typeof a === 'number') { // number
+            a.toFixed(1);
+        }
+    }
+    numOrStr('123');
+    numOrStr(1);
+    function numOrNumArray(a) {
+        if (Array.isArray(a)) { // number[]
+            a.map(n => n * 2);
+        }
+        else if (typeof a === 'number') { // number
+            a.toFixed(1);
+        }
+    }
+    numOrNumArray(123);
+    numOrNumArray([1, 2, 3]);
+    class A {
+        aaa() { }
+    }
+    class B {
+        bbb() { }
+    }
+    // * 클래스는 그 자체로도 타입이 될 수 있다.
+    // * 단, 클래스 자체를 의미하는 게 아니라 해당 클래스로 생성한 인스턴스 객체를 의미한다.
+    // -> 인스턴스 타이핑은 클래스 이름으로 한다.
+    function aOrB(param) {
+        if (param instanceof A) { // 클래스 A의 인스턴스일 때
+            param.aaa();
+        }
+        else if (param instanceof B) { // 클래스 B의 인스턴스일 때
+            param.bbb();
+        }
+    }
+    // aOrB(A); // ❌ 'typeof A' 형식의 인수는 'A | B' 형식의 매개 변수에 할당될 수 없습니다. 
+    aOrB(new A());
+    aOrB(new B());
+    {
+        function typeCheck(a) {
+            if (a.type === 'b') {
+                a.bbb;
+            }
+            else if (a.type === 'c') {
+                a.ccc;
+            }
+            else if (a.type === 'd') {
+                a.ddd;
+            }
+        }        
+    }
+}
