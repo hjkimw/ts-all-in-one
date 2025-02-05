@@ -823,5 +823,30 @@ let target: number[] = [];
     add4((a)=> +a);
     
   }
+}
+
+
+// * 기본값 타이핑
+{
+  
+  const a = (b: number = 3, c: number = 5): string =>{
+    return '3';
+  }
+
+  const a1 = (b: {children: string} = {children: 'jin'})=>{
+    
+  }
+
+  const a2 = <T = unknown >(x: T, y: T)=>{
+    return {x, y};
+  }
+  
+  const a3 = <T extends Element >(x: T, y: T)=>{
+    return {x, y};
+  }
+
+  const a4 = <T extends Element, K extends number | string >(x: T, y: K)=>{
+    return {x, y};
+  }
 
 }
