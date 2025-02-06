@@ -82,3 +82,19 @@ class C<T>{
   // const filtered = ['1', 2, '3', 4, '5'].filter<string | number>(predicate); // string[]
 
 }
+
+
+// * forEach 타입 직접 만들기
+{  
+
+  interface Arr<T>{        
+    forEach(callbackFn:(value:T, index: number, thisArgs?: any)=> void): void;
+  }
+
+  // const a: Arr<number> = [1, 2, 3];
+  // const a: Arr<string> = ['1', '2', '3'];
+  const a: Arr<string | number> = ['1', '2', 3, 4];
+
+  const forEached = [1, 2, 3].forEach(item => console.log(item));
+
+}
