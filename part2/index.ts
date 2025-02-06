@@ -57,10 +57,28 @@ class C<T>{
     //...
   }
 
+  
+
   // 1. interface Array<T>의 제네릭 <T>가 number타입이 된다. 
   //  1.1. <T> -> number
   // 2. interface Array<T>의 map<U> 속성 제네릭 <U>가 string 타입이 된다. 
   //  2.2. <U> -> string
   const strings = [1, 2, 3].map(item => item.toString()); // string[]
   
+}
+
+
+// * filter 제네릭 분석
+{
+  interface Array<T>{
+    filter<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S[];
+    // -> filter<S extends number>(predicate: (value: number, index: number, array: number[]) => value is number, thisArg?: any): S[];
+    // -> filter<S extends string | number>(predicate: (value: string | number, index: number, array: string | number[]) => value is string | number, thisArg?: any): S[];    
+  }
+  // const filtered = [1, 2, 3].filter((value)=> value % 2); // number[]  
+
+  const predicate = (value: string | number )=> typeof value === 'string';
+  const filtered = ['1', 2, '3', 4, '5'].filter(predicate); // string | number[]
+  // const filtered = ['1', 2, '3', 4, '5'].filter<string | number>(predicate); // string[]
+
 }
