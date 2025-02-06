@@ -98,3 +98,27 @@ class C<T>{
   const forEached = [1, 2, 3].forEach(item => console.log(item));
 
 }
+
+
+// * map 타입 직접 만들기
+{
+
+  interface Arr<T>{
+    // map(callbackFn:(value:T, index: number)=> T): T[];
+    map<U>(callbackFn:(value:T, index: number)=> U): U[];
+  }
+
+  const a: Arr<number> = [1, 2, 3];
+  const b = a.map(v => v + 1);
+
+  // const c = a.map<string>(v=> v.toString()); // string[]
+  const c = a.map(v=> v.toString()); // string[]
+
+  const d = a.map(v=> v % 2 === 0); // boolean[]
+
+
+  const e: Arr<string> = ['1', '2', '3'];
+  const f = e.map(v=> +v); // number[]
+
+  
+}
