@@ -174,3 +174,32 @@ class C<T>{
   // -> 결과적으로 리턴값 타입, 매개변수 타입도 만족해야 대입할 수 있게 된다.
 
 }
+
+
+// * 하나에는 걸리겠지(오버로딩)
+{
+  // -> function, interface, class 에서 오버로딩 가능
+
+  function s(x: number, y: number): number;
+  function s(x: string | number, y: string | number): string | number;
+  function s(x: any, y: any): any{}
+
+  interface Add{
+    (x: number, y: number): number;
+    (x: string, y: string): string;
+  }
+  
+  const add: Add = (x: any, y: any) => x + y;
+
+  class A{
+    add(x: number, y: number): number;
+    add(x: string, y: string): string;
+    add(x: any, y: any){
+      return x + y;
+    }
+  }
+
+  const c = new A().add(1, 2); // number
+  const c1 = new A().add('1', '2'); // string
+
+}
