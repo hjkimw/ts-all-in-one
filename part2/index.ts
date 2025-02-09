@@ -203,3 +203,38 @@ class C<T>{
   const c1 = new A().add('1', '2'); // string
 
 }
+
+
+// * 타입스크립트는 건망증이 심하다(+에러 처리법)
+interface Axios{
+  get(): void;
+}
+
+class CustomError extends Error{  
+  constructor(
+    name: string,
+    message: string,
+    stack? : string
+  ){
+    super();
+  }
+
+  response?: {
+    data: any;
+  }
+}
+
+declare const axios: Axios;
+
+(async ()=>{
+  try {
+    await axios.get();
+
+  } catch (error) { 
+    if(error instanceof CustomError){
+      console.error(error.response?.data);
+      error.response?.data;
+    }
+    
+  }  
+})();
