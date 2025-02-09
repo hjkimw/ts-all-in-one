@@ -141,3 +141,36 @@ class C<T>{
   const e = c.filter((v): v is number => typeof v === 'number'); // [1, 3, 5], number[]  
 
 }
+
+
+// * 공변성과 반공변성
+{
+  
+  function a(x: string): number {
+    return +a;
+  }
+  
+  type B = (x: string)=> number | string;
+  
+  const b: B = a; // ⭕️, <- 리턴값은 더 넓은 타입으로 대입할 수 있다.
+  // 합집합 number | string 이 number 보다 더 넓으므로 number | string 리턴값에 number를 대입 가능
+
+  
+  function a1(x: string): number | string { // (x: string)=> number 또는 (x: string)=> string
+    return +a;
+  }
+
+  type B1 = (x: string)=> number;  
+  // const b1: B1 = a1; // ❌, 대입하려는 B1 리턴값 타입이 a1 리턴값 타입 보다 더 좁으므로 대입 불가
+
+  // * 함수의 리턴값 타입의 경우
+  // -> 좁은 타입에서 넓은 타입 또는 동일한 타입으로 대입이 가능
+  // -> 넓은 타입에서 좁은 타입으로는 대입이 불가능하다.
+
+  // * 함수의 매개변수의 경우
+  // -> 넓은 타입에서 좁은 타입 또는 동일한 타입으로 대입이 가능
+  // -> 좁은 타입에서 넓은 타입으로는 대입이 불가능하다. 매개변수는 리턴값이랑 반대다.
+
+  // -> 결과적으로 리턴값 타입, 매개변수 타입도 만족해야 대입할 수 있게 된다.
+
+}
