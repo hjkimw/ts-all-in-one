@@ -24,7 +24,7 @@
   //   age?: number;
   //   marreid?: boolean;
   // }
-  
+    
 
 
   type P<T> = {
@@ -124,3 +124,70 @@
   // 'cat'은 대소문자가 다르므로 'Animal' 유니온 타입에 존재하지 않음 -> 제외됨
 
 }    
+
+
+// * Required, Record, NonNullable 타입 분석
+{
+
+  interface Profile{
+    name?: string;
+    age?: number;
+    marreid?: boolean;
+  }
+
+  type Name = Profile['name']; // string | undefined
+
+  type R<T> = {
+    // [ Key in keyof T]? : T[Key]; // ?, 해당 타입에 옵셔널을 추가 
+    // [ Key in keyof T]-? : T[Key]; // -?, 해당 타입 옵셔널을 제거    
+  }
+
+
+  // * readonly 추가 및 제거
+  interface Profile2{
+    readonly name?: string;
+    readonly age?: number;
+    readonly  marreid?: boolean;
+  }
+
+  type Rm<T> = {
+    // 앞에 -readOnly를 추가해 속성들의 readonly를 제거
+    // -?를 추가해 속성들의 옵셔널을 제거
+    -readonly [key in keyof T] -? : T[key];
+  }
+
+  const jin: Rm<Profile2> = {
+    name: 'jin',
+    age: 28,
+    marreid: false,
+  };
+
+
+  // * Record  
+
+  // interface Obj {
+  //   [key: string]: number;
+  // }
+
+  const a: Record<string, number> = {
+    a: 3,
+    b: 5, 
+    c: 7,
+  }
+
+  type Rc<T extends keyof any, S> = {
+    [key in T] : S;
+  }
+
+
+  // * NonNullable
+  // -> 제네릭으로 전달한 타입에서 null, undefined 타입을 제거
+
+  type A = string | null | undefined | boolean | number;
+
+  type B = NonNullable<A> // string | boolean | number
+
+  // null | undefined 면 never로 제외시키고 아닐경우 T로
+  type N<T> = T extends null | undefined ? never : T; 
+ 
+}
