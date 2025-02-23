@@ -191,3 +191,57 @@
   type N<T> = T extends null | undefined ? never : T; 
  
 }
+
+
+// * Parameters, infer 타입 분석
+{
+
+  // * Parameters
+  interface Zip { 
+    (x: number, y: string, z: boolean): {x: number, y: string, z: boolean}; 
+  }
+  
+  const zip: Zip = (x: number, y: string, z: boolean) =>{
+    return {x, y, z};
+  } 
+
+  // type Params = Parameters<typeof zip>; // [x: number, y: string, z: boolean]
+  
+  // * infer
+  // 1. 제네릭을 함수로 제한
+  // -> infer는 extends에서만 사용이 가능
+  type P<T extends (...args: any)=> any> = T extends (...args: infer A)=> any ? A: never;
+  type R<T extends (...args: any)=> any> = T extends (...args: any )=> infer A ? A : never;
+
+  type Params = P<typeof zip>;
+  type Ret = ReturnType<typeof zip>;
+  type First = Params[0];
+
+
+  class A {    
+    protected a: string;
+    protected b: number;
+    protected c: boolean;
+    
+    constructor(
+      a: string,
+      b: number,
+      c: boolean,
+    ){
+      this.a = a;
+      this.b = b;
+      this.c = c;
+    }        
+  }
+
+  const a = new A('123', 456, true);
+  
+  // 생성자의 타입 가져오기
+  type C = ConstructorParameters<typeof A>; // [a: string, b: number, c: boolean]
+
+  // 인스턴스의 타입 가져오기
+  type I = InstanceType<typeof A>; 
+
+  
+}
+
