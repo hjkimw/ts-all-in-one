@@ -242,6 +242,33 @@
   // 인스턴스의 타입 가져오기
   type I = InstanceType<typeof A>; 
 
-  
 }
+
+
+// * 완전 복잡한 타입 분석하기(Promise와 Awaited 편)
+{
+
+  // Promise<number> -> Promise<number> -> Promise<number> -> Promise<string>
+  const p1 = Promise.resolve(1).then( a=> a + 1).then(a=> a+1).then(a => a.toString());
+  
+  // Promise<number>
+  const p2 = Promise.resolve(2);
+
+  // Promise<unknown>
+  const p3 = new Promise((res, rej)=> setTimeout(()=> res, 1000));
+
+  // { '0': string , '1': number, '2': unknown, length: 3 }
+  Promise.all([p1, p2, p3]).then(result => console.log(result)); // [ '3', 2, undefined ]  
+  
+  // T = [string, number, unknown] 
+  // keyof T -> '0' | '1' | '2' | 'length'
+
+  const arr = [1, 2, 3] as const;
+  type Arr = keyof typeof arr; // keyof readonly [1, 2, 3]
+
+  
+
+}
+
+
 
