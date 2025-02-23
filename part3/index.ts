@@ -289,8 +289,39 @@
   type T = ThisParameterType<typeof a>;
 
 
-  
+
 
 }
 
 
+
+// * 완전 복잡한 타입 분석하기(flat 편)
+{
+  
+  interface Array<T> {
+    /**
+     * 배열의 각각한 요소에 정의된 콜백 함수를 호출합니다. 그런 다음 결과를 새 배열로 평평하게 만듭니다.
+     * 이는 깊이 1의 맵 뒤에 평평한 것과 동일합니다.
+     *
+     * @param callback 최대 세 개의 인수를 허용하는 함수입니다. flatMap 메서드는
+     * 배열의 각각한 요소에 대해 콜백 함수를 한 번씩 호출합니다.
+     * @param thisArg 콜백 함수에서 this 키워드가 참조할 수 있는 객체입니다. 만약
+     * thisArg가 생략되면, this 값으로 undefined가 사용됩니다.
+     */
+    flatMap<U, This = undefined>(
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+        thisArg?: This,
+    ): U[];
+
+    /**
+     * 지정된 깊이까지 모든 하위 배열 요소를 재귀적으로 연결하여 새로운 배열을 반환합니다.
+     *
+     * @param depth 최대 재귀 깊이
+     */
+    flat<A, D extends number = 1>(
+        this: A,
+        depth?: D,
+    ): FlatArray<A, D>[];
+  }
+
+}
