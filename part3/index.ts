@@ -271,4 +271,26 @@
 }
 
 
+// * 완전 복잡한 타입 분석하기(bind 편)
+{
+  function a(this: Window | typeof obj){
+    console.log(this.name);    
+  }
+
+  const obj = {name: 'jin'};
+
+  const b = a.bind(obj);
+  b(); // 'jin'
+
+  /**
+   * 함수 유형의 'this'매개 변수의 유형을 추출하거나 함수 유형에 'this'매개 변수가없는 경우 'unknown'.
+   */
+  // type ThisParameterType<T> = T extends (this: infer U, ...args: never) => any ? U : unknown;
+  type T = ThisParameterType<typeof a>;
+
+
+  
+
+}
+
 
